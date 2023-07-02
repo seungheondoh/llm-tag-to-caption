@@ -12,10 +12,7 @@ from time import sleep
 
 def api_helper(instance):
     text = instance['text']
-    split = instance['split']
     inputs = instance['inputs']
-    prompt = instance['prompt']
-    dataset_type = instance['dataset_type']
     completion = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[

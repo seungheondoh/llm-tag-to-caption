@@ -2,7 +2,7 @@
 
 This project aims to generate captions for music using existing tags. We leverage the power of OpenAI's GPT-3.5 Turbo API to generate high-quality and contextually relevant captions based on music tags.
 
-This is a PyTorch implementation of [LP-MusicCaps: LLM-Based Pseudo Music Captioning](#) for multi-modal music representation learning.
+This is a PyTorch implementation of [LP-MusicCaps: LLM-Based Pseudo Music Captioning](#) for music captioning.
 
 > [**LP-MusicCaps: LLM-Based Pseudo Music Captioning**](#)   
 > SeungHeon Doh, Keunwoo Choi, Jongpil Lee, Juhan Nam
