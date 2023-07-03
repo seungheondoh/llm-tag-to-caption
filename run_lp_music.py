@@ -48,6 +48,9 @@ class OpenAIGpt:
         elif self.dataset_type == "mtat":
             self.annotation = json.load(open("../dataset/mtat/codified_annotation.json", 'r'))
             self.track_split = json.load(open("../dataset/mtat/codified_track_split.json", 'r'))
+        elif self.dataset_type == "musiccaps":
+            self.annotation = json.load(open("../dataset/musiccaps/annotation.json", 'r'))
+            self.track_split = json.load(open("../dataset/musiccaps/track_split.json", 'r'))
         self.prompt_dict = {
             "writing": {
                 "singular":"write a song description sentence including the following single attribute.",
@@ -62,14 +65,13 @@ class OpenAIGpt:
                 "plural":"write a song description sentence including the following attributes. paraphraze paraphrasing is acceptable.",
                 },
             "prediction_attribute": {
-                "singular":"write a song description sentence including the following single attribute.",
+                "singular":"write the answer as a python dictionary with new_attribute and description as keys. for new_attribute, write new attributes with high co-occurrence with the following single attribute. for description, write a song description sentence including the single attribute and new attribute.",
                 "plural":"write the answer as a python dictionary with new_attribute and description as keys. for new_attribute, write new attributes with high co-occurrence with the following attributes. for description, write a song description sentence including the following attributes and new attributes.",
                 }
             }
         if split == "TRAIN":
             if self.dataset_type == "msd":
-                train_track = self.track_split['train_track'] + self.track_split['extra_track']            
-                target_track = train_track[partition * 10000 : (partition + 1) * 10000]
+                train_track = self.track_split['train_track'] + self.track_split['extra_track']
             elif self.dataset_type == "mtat":
                 target_track = self.track_split['train_track']
         elif split == "VALID":
@@ -81,7 +83,6 @@ class OpenAIGpt:
             self.get_already_download()
             target_track = list(set(target_track).difference(self.already_download))
         self.fl_dict = {i : self.annotation[i] for i in target_track}
-        print(len(self.fl_dict))
         
     def get_already_download(self):
         if self.split == "TRAIN":
@@ -106,18 +107,18 @@ class OpenAIGpt:
                     tags = instance["tag"]
                 elif self.dataset_type == "mtat":
                     tags = instance['extra_tag']
+                elif self.dataset_type == "musiccaps":
+                    tags = instance['aspect_list']
                 text = ", ".join(tags)
                 instance["text"] = text
                 if len(tags) > 1:
                     instruction = self.prompt_dict[self.prompt]["plural"]
                 elif len(tags) == 0:
-                    # No annotation tag case
                     continue
                 else:
                     instruction = self.prompt_dict[self.prompt]["singular"]
                 instance["inputs"] = f'{instruction} \n {text}'
                 inputs.append(instance)
-            
             with ThreadPoolExecutor() as pool:
                 tqdm(pool.map(api_helper, inputs))
             print("finish")
@@ -141,4 +142,3 @@ if __name__ == '__main__':
         partition = args.partition
         )
     openai_gpt.run()
-    # python main.py --prompt short --partition 4

@@ -25,10 +25,10 @@ This is a PyTorch implementation of [LP-MusicCaps: LLM-Based Pseudo Music Captio
         "plural":"write a song description sentence including the following attributes. paraphraze paraphrasing is acceptable.",
         },
     "prediction_attribute": {
-        "singular":"write a song description sentence including the following single attribute.",
+        "singular":"write the answer as a python dictionary with new_attribute and description as keys. for new_attribute, write new attributes with high co-occurrence with the following single attribute. for description, write a song description sentence including the single attribute and new attribute.",
         "plural":"write the answer as a python dictionary with new_attribute and description as keys. for new_attribute, write new attributes with high co-occurrence with the following attributes. for description, write a song description sentence including the following attributes and new attributes.",
         }
-}
+    }
 ```
 
 ### Installation
@@ -52,11 +52,17 @@ To generate captions using music tags, simply run the following command:
 ```
 python run.py --tags <music_tags>
 ```
+
 Replace <music_tags> with the tags you want to generate captions for. Separate multiple tags with commas, such as `happy, piano, pop, dynamics`.
 
-### Reproduce ISMIR2023 Paper results 
+### Caption Generation from Existing Tag Dataset
 ```
-python run_lp_music.py --dataset_type mtat --prompt {writing, summary, paraphrase, prediction_attribute}
+python run_lp_music.py --dataset_type {musiccaps, msd, mtat} --prompt {writing, summary, paraphrase, prediction_attribute}
+```
+
+### Reproduce ISMIR 2023 paper results
+```
+python eval_lp_music.py
 ```
 
 ### License
