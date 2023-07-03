@@ -1,11 +1,11 @@
-## Tag-to-Caption Augmentation using Large Language Model
+# Tag-to-Caption Augmentation using Large Language Model
 
 This project aims to generate captions for music using existing tags. We leverage the power of OpenAI's GPT-3.5 Turbo API to generate high-quality and contextually relevant captions based on music tags.
 
 This is a PyTorch implementation of [LP-MusicCaps: LLM-Based Pseudo Music Captioning](#) for music captioning.
 
 > [**LP-MusicCaps: LLM-Based Pseudo Music Captioning**](#)   
-> SeungHeon Doh, Keunwoo Choi, Jongpil Lee, Juhan Nam
+> SeungHeon Doh, Keunwoo Choi, Jongpil Lee, Juhan Nam   
 > To appear ISMIR 2023   
 
 
@@ -28,7 +28,7 @@ This is a PyTorch implementation of [LP-MusicCaps: LLM-Based Pseudo Music Captio
         "singular":"write the answer as a python dictionary with new_attribute and description as keys. for new_attribute, write new attributes with high co-occurrence with the following single attribute. for description, write a song description sentence including the single attribute and new attribute.",
         "plural":"write the answer as a python dictionary with new_attribute and description as keys. for new_attribute, write new attributes with high co-occurrence with the following attributes. for description, write a song description sentence including the following attributes and new attributes.",
         }
-    }
+}
 ```
 
 ### Installation
@@ -49,19 +49,21 @@ api_port={8088}
 ### How to Use
 To generate captions using music tags, simply run the following command:
 
-```
+```bash
 python run.py --tags <music_tags>
 ```
 
 Replace <music_tags> with the tags you want to generate captions for. Separate multiple tags with commas, such as `happy, piano, pop, dynamics`.
 
 ### Caption Generation from Existing Tag Dataset
-```
+
+```bash
 python run_lp_music.py --dataset_type {musiccaps, msd, mtat} --prompt {writing, summary, paraphrase, prediction_attribute}
 ```
 
 ### Reproduce ISMIR 2023 paper results
-```
+
+```bash
 python eval_lp_music.py
 ```
 

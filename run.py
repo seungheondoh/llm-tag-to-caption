@@ -34,7 +34,7 @@ class OpenAIGpt:
         self.split = split
         self.partition = partition
         self.prompt = prompt
-        self.prompt_dict = {
+        self.prompt_dict ={
             "writing": {
                 "singular":"write a song description sentence including the following single attribute.",
                 "plural":"write a song description sentence including the following attributes.",
@@ -48,7 +48,7 @@ class OpenAIGpt:
                 "plural":"write a song description sentence including the following attributes. paraphraze paraphrasing is acceptable.",
                 },
             "prediction_attribute": {
-                "singular":"write a song description sentence including the following single attribute.",
+                "singular":"write the answer as a python dictionary with new_attribute and description as keys. for new_attribute, write new attributes with high co-occurrence with the following single attribute. for description, write a song description sentence including the single attribute and new attribute.",
                 "plural":"write the answer as a python dictionary with new_attribute and description as keys. for new_attribute, write new attributes with high co-occurrence with the following attributes. for description, write a song description sentence including the following attributes and new attributes.",
                 }
             }
