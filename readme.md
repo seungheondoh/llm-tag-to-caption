@@ -10,11 +10,11 @@ This is a implementation of [LP-MusicCaps: LLM-Based Pseudo Music Captioning](#)
 
 ## Pesudo Caption Dataset
 
-We released a 2.2M pesudo caption dataset using the MSD-ECALS subset, Magnatagatune, and Music Caps dataset. Download from,
+We released a 2.2M (total) pesudo caption dataset using the MSD-ECALS subset, Magnatagatune, and Music Caps dataset. Download from,
 
-- [LP-MusicCaps-MSD, HuggingFace](#), [LP-MusicCaps-MSD, Zenodo](#).
-- [LP-MusicCaps-MTT, HuggingFace](#), [LP-MusicCaps-MTT, Zenodo](#).
-- [LP-MusicCaps-MC, HuggingFace](#), [LP-MusicCaps-MC, Zenodo](#).
+- **LP-MusicCaps-MSD**, [HuggingFace](#), [Zenodo](#).
+- **LP-MusicCaps-MTT**, [HuggingFace](#), [Zenodo](#).
+- **LP-MusicCaps-MC**, [HuggingFace](#), [Zenodo](#).
 
 ```python
 from datasets import load_dataset
@@ -22,7 +22,7 @@ dataset = load_dataset("seungheondoh/LP-MusicCaps-MSD")
 dataset['test'][0]
 ```
 
-```bash
+```yaml
 {
     'track_id': 'TREADPD128F933E680',
     'title': 'Written in the stars',
@@ -72,7 +72,7 @@ python run.py --prompt {writing, summary, paraphrase, attribute_prediction} --ta
 Replace <music_tags> with the tags you want to generate captions for. Separate multiple tags with commas, such as `beatbox, finger snipping, male voice, amateur recording, medium tempo`.
 
 tag_to_caption generation `writing` results:
-```bash
+```
 query: 
 write a song description sentence including the following attributes
 beatbox, finger snipping, male voice, amateur recording, medium tempo
@@ -82,7 +82,7 @@ results:
 ```
 
 tag_to_caption generation `summary` results:
-```bash
+```
 query: 
 write a single sentence that summarize a song with the following attributes. Don't write artist name or album name.
 beatbox, finger snipping, male voice, amateur recording, medium tempo
@@ -92,7 +92,7 @@ results:
 ```
 
 tag_to_caption generation `paraphrase` results:
-```bash
+```
 query: 
 write a song description sentence including the following attributes. paraphraze paraphrasing is acceptable.
 beatbox, finger snipping, male voice, amateur recording, medium tempo
@@ -102,7 +102,7 @@ results:
 ```
 
 tag_to_caption generation `attribute_prediction` results:
-```bash
+```
 query: 
 write the answer as a python dictionary with new_attribute and description as keys. for new_attribute, write new attributes with high co-occurrence with the following attributes. for description, write a song description sentence including the following attributes and new attributes."
 beatbox, finger snipping, male voice, amateur recording, medium tempo
