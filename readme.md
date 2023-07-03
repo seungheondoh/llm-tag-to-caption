@@ -8,13 +8,13 @@ This is a implementation of [LP-MusicCaps: LLM-Based Pseudo Music Captioning](#)
 > SeungHeon Doh, Keunwoo Choi, Jongpil Lee, Juhan Nam   
 > To appear ISMIR 2023   
 
-## Pesudo Caption Dataset
+## pseudo Caption Dataset
 
-We released a 2.2M (total) pesudo caption dataset using the MSD-ECALS subset, Magnatagatune, and Music Caps dataset. Download from,
+We released a 2.2M (total) pseudo caption dataset using the MSD-ECALS subset, Magnatagatune, and Music Caps dataset. Download from,
 
-- **LP-MusicCaps-MSD**, [HuggingFace](#), [Zenodo](#).
-- **LP-MusicCaps-MTT**, [HuggingFace](#), [Zenodo](#).
-- **LP-MusicCaps-MC**, [HuggingFace](#), [Zenodo](#).
+- **LP-MusicCaps-MSD**: [HuggingFace](#), [Zenodo](#).
+- **LP-MusicCaps-MTT**: [HuggingFace](#), [Zenodo](#).
+- **LP-MusicCaps-MC**: [HuggingFace](#), [Zenodo](#).
 
 ```python
 from datasets import load_dataset
@@ -40,10 +40,10 @@ dataset['test'][0]
         'refined',
         'folk'
         ],
-    'writing': 'This song showcases the undeniable talent of a guitar virtuoso, seamlessly blending the refined elements of pop rock and folk with the atmospheric and dramatic sounds of heavy metal and hard rock, resulting in an indulgent and unforgettable musical experience.',
-    'summary': "This song showcases a guitar virtuoso's refined and atmospheric pop rock sound, with elements of dramatic heavy metal, folk, and indulgent hard rock.",
-    'paraphrase': 'This song showcases the refined playing of a guitar virtuoso at the forefront of intricate pop rock arrangements, with atmospheric and dramatic elements that draw from heavy metal, folk, and indulgent hard rock influences.',
-    'attribute_prediction': 'This pop rock ballad is a showcase for the guitar virtuoso\\s refined playing style, blending atmospheric and heavy metal sounds into a unique folk rock sound. With indulgent solos and dramatic duets, the track creates a hard rock energy that is both mellow and upbeat, introspective and soulful.'
+    'caption_pseudo_writing': 'This song showcases the undeniable talent of a guitar virtuoso, seamlessly blending the refined elements of pop rock and folk with the atmospheric and dramatic sounds of heavy metal and hard rock, resulting in an indulgent and unforgettable musical experience.',
+    'caption_pseudo_summary': "This song showcases a guitar virtuoso's refined and atmospheric pop rock sound, with elements of dramatic heavy metal, folk, and indulgent hard rock.",
+    'caption_pseudo_paraphrase': 'This song showcases the refined playing of a guitar virtuoso at the forefront of intricate pop rock arrangements, with atmospheric and dramatic elements that draw from heavy metal, folk, and indulgent hard rock influences.',
+    'caption_pseudo_attribute_prediction': 'This pop rock ballad is a showcase for the guitar virtuoso\\s refined playing style, blending atmospheric and heavy metal sounds into a unique folk rock sound. With indulgent solos and dramatic duets, the track creates a hard rock energy that is both mellow and upbeat, introspective and soulful.'
 }
 ```
 
@@ -88,7 +88,7 @@ write a single sentence that summarize a song with the following attributes. Don
 beatbox, finger snipping, male voice, amateur recording, medium tempo
 ----------
 results: 
-"Experience the raw and authentic energy of an amateur recording as mesmerizing beatbox rhythms intertwine with catchy finger snipping, while a soulful male voice delivers heartfelt lyrics on a medium tempo track."
+"An amateur recording featuring a male voice singing over a medium tempo beatbox with finger snapping."
 ```
 
 tag_to_caption generation `paraphrase` results:
@@ -98,7 +98,7 @@ write a song description sentence including the following attributes. paraphraze
 beatbox, finger snipping, male voice, amateur recording, medium tempo
 ----------
 results: 
-"Experience the raw and authentic energy of an amateur recording as mesmerizing beatbox rhythms intertwine with catchy finger snipping, while a soulful male voice delivers heartfelt lyrics on a medium tempo track."
+"This song features the mesmerizing combination of beatbox and finger snipping, accompanied by a captivating male voice. Recorded in an amateur setting, this medium-tempo track exudes unique charm and raw emotion."
 ```
 
 tag_to_caption generation `attribute_prediction` results:
@@ -108,7 +108,14 @@ write the answer as a python dictionary with new_attribute and description as ke
 beatbox, finger snipping, male voice, amateur recording, medium tempo
 ----------
 results: 
-"Experience the raw and authentic energy of an amateur recording as mesmerizing beatbox rhythms intertwine with catchy finger snipping, while a soulful male voice delivers heartfelt lyrics on a medium tempo track."
+{
+  "new_attribute": [
+    "acoustic guitar",
+    "uplifting lyrics",
+    "catchy melody"
+  ],
+  "description": "A vibrant song featuring beatbox, finger snipping, a male voice, and an amateur recording. With its medium tempo, this track also incorporates elements of acoustic guitar, which add a melodic and uplifting touch. The catchy melody and heartfelt lyrics make it an enjoyable listening experience for anyone looking for a feel-good tune."
+}
 ```
 
 ## Caption Generation from Existing Tag Dataset
