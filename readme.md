@@ -8,7 +8,7 @@ This is a implementation of [LP-MusicCaps: LLM-Based Pseudo Music Captioning](#)
 > SeungHeon Doh, Keunwoo Choi, Jongpil Lee, Juhan Nam   
 > To appear ISMIR 2023   
 
-## pseudo Caption Dataset
+## Pseudo Caption Dataset
 
 We released a 2.2M (total) pseudo caption dataset using the MSD-ECALS subset, Magnatagatune, and Music Caps dataset. Download from,
 
@@ -55,7 +55,7 @@ To run this project locally, follow the steps below:
 pip install -r requirements.txt
 # our exp version (date): openai-0.27.8, python-dotenv-1.0.0  (2023.04 ~ 2023.05)
 ```
-Set up your OpenAI API credentials by creating a `.env` file in the root directory. Add the following lines and replace YOUR_API_KEY with your actual API key:
+Set up your OpenAI API credentials by creating a `.env` file in the root directory. Check [OpenAI API](https://openai.com/blog/openai-api) access and price first. Add the following lines and replace YOUR_API_KEY with your actual API key:
 
 ```bash
 OPENAI_API_KEY=your_key_in_here
@@ -63,7 +63,7 @@ api_host=0.0.0.0
 api_port=8088
 ```
 
-## Quick Start
+## Quick Start: Tag to Caption
 To generate captions using music tags, simply run the following command:
 
 ```bash
@@ -119,7 +119,7 @@ results:
 ```
 
 ## Caption Generation from Existing Tag Dataset
-We have prepared a simple example of 26 `tag-caption` pairs from [Music Caps](https://huggingface.co/datasets/google/MusicCaps). if you want to reproduce the 2.2 Miliion examples from the paper, download annotation data & track split from [MSD-ECALS](https://zenodo.org/record/7107130), [Magnatagatune-MTT](https://github.com/seungheondoh/msu-benchmark). 
+We have prepared randomly sampled 20 `tag-caption` pairs from [Music Caps](https://huggingface.co/datasets/google/MusicCaps). if you want to reproduce the 2.2 Miliion examples from the paper, download annotation data & track split from [MSD-ECALS](https://zenodo.org/record/7107130), [Magnatagatune-MTT](https://github.com/seungheondoh/msu-benchmark). 
 
 ```bash
 python run_lp_music.py --dataset_type {musiccaps, msd, mtat} --prompt {writing, summary, paraphrase, attribute_prediction}
