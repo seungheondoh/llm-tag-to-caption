@@ -1,6 +1,6 @@
 {
   "auto_mapping": null,
-  "base_model_name_or_path": "./models_hf/7B",
+  "base_model_name_or_path": "./models/7B",
   "bias": "none",
   "fan_in_fan_out": false,
   "inference_mode": true,
