@@ -32,10 +32,10 @@ def main(
     peft_model,
     dataset_name,
     dataset_split,
-    device: str="auto",
+    device: str="cuda:1",
     data_path: str="../../dataset",
     quantization: bool=True,
-    max_new_tokens =256, #The maximum numbers of tokens to generate
+    max_new_tokens =512, #The maximum numbers of tokens to generate
     prompt_file: str=None,
     seed: int=42, #seed value for reproducibility
     do_sample: bool=True, #Whether or not to use sampling ; use greedy decoding otherwise.
@@ -74,8 +74,8 @@ def main(
     # tokenizer.add_special_tokens({"pad_token": "<PAD>"})
     model.resize_token_embeddings(model.config.vocab_size + 1)
     dataloader = torch.utils.data.DataLoader(
-            dataset, batch_size=50, shuffle=False,
-            num_workers=16, pin_memory=True, drop_last=False
+            dataset, batch_size=32, shuffle=False,
+            num_workers=24, pin_memory=True, drop_last=False
         )
     for idx, item in enumerate(tqdm(dataloader)):
         fnames, prompts, input_tags = item
@@ -112,7 +112,7 @@ def main(
             inferences.append({
                 "fname": str(fname),
                 "tag_list": input_tag,
-                "pesudo_caption": text
+                "pseudo_caption": text
             })
         os.makedirs(f"./{dataset_name}", exist_ok=True)
         with open(os.path.join(f"./{dataset_name}/{dataset_split}_{idx}.jsonl"), encoding= "utf-8",mode="w") as f: 
