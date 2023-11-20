@@ -18,7 +18,7 @@ from tqdm import tqdm
 import re
 import pandas as pd
 import jsonlines
-from dataset import AudiosetMusic_Dataset, Music4all_Dataset, FMA_Dataset
+from dataset import AudiosetMusic_Dataset, Music4all_Dataset, FMA_Dataset, MSD_Dataset
 
 def text_clearning(text):
     pattern = r"[^a-zA-Z0-9\s]"
@@ -61,17 +61,21 @@ def main(
     if peft_model:
         model = load_peft_model(model, peft_model, device)
     model.eval()
+    
+    dataset = None
     if dataset_name == "audioset":
         dataset = AudiosetMusic_Dataset(data_path=data_path, split=dataset_split)
     elif dataset_name == "music4all":
         dataset = Music4all_Dataset(data_path= data_path, split=dataset_split)
     elif dataset_name == "fma":
         dataset = FMA_Dataset(data_path= data_path, split=dataset_split)
+    elif dataset_name == "msd":
+        dataset = MSD_Dataset(data_path= data_path, split=dataset_split)
     # tokenizer.add_special_tokens({"pad_token": "<PAD>"})
     model.resize_token_embeddings(model.config.vocab_size + 1)
     dataloader = torch.utils.data.DataLoader(
-            dataset, batch_size=64, shuffle=False,
-            num_workers=8, pin_memory=True, drop_last=False
+            dataset, batch_size=50, shuffle=False,
+            num_workers=16, pin_memory=True, drop_last=False
         )
     for idx, item in enumerate(tqdm(dataloader)):
         fnames, prompts, input_tags = item
