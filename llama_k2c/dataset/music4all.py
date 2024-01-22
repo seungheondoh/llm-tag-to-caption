@@ -8,17 +8,12 @@ PROMPT = "### Instruction:\n{instruction}\n\n### Input:\n{input}\n\n### Response
 class Music4all_Dataset(Dataset):
     def __init__(self, data_path, split):
         self.id_genres = pd.read_csv(os.path.join(data_path, "music4all","id_genres.csv"),header=0, sep='	').set_index("id")
-        id_information = pd.read_csv(os.path.join(data_path, "music4all","id_information.csv"),header=0, sep='	').set_index("id")
+        self.id_information = pd.read_csv(os.path.join(data_path, "music4all","id_information.csv"),header=0, sep='	').set_index("id")
         self.id_tags = pd.read_csv(os.path.join(data_path, "music4all","id_tags.csv"),header=0, sep='	').set_index("id")
-
-        train = self.load_jsonlines(os.path.join(data_path, "music4all", "metadata", "train.jsonl"))
-        test = self.load_jsonlines(os.path.join(data_path, "music4all", "metadata", "test.jsonl"))
-        already_download = [i["fname"] for i in train + test]
-        self.id_information = id_information.drop(already_download, axis="index")
         
         self.instruction_dict = {
-            "singular":"write a single sentence that summarize a song with the following single attribute. Don't write lyrics. Don't write artist name or album name.",
-            "plural":"write a single sentence that summarize a song with the following attributes. Don't write lyrics. Don't write artist name or album name.",
+            "singular":"write a single sentence that summarize a song with the following single attribute. Don't write artist name or album name.",
+            "plural":"write a single sentence that summarize a song with the following attributes. Don't write artist name or album name.",
             }
         
     def load_jsonlines(self, data_file):

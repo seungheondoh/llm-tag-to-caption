@@ -1,10 +1,6 @@
+*.tsv
 exp/
-temporal/
-audioset/
-batch_error
-fma/
-msd/
-music4all/
+backup/
 notebook/
 7B/
 k2c_llama_7B/

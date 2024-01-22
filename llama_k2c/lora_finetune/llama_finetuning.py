@@ -22,26 +22,17 @@ from utils.config_utils import (
     generate_dataset_config,
 )
 from peft import get_peft_model, TaskType, prepare_model_for_int8_training
-from configs import fsdp_config, train_config
+from configs import train_config
 import torch.optim as optim
 from torch.optim.lr_scheduler import CosineAnnealingWarmRestarts
 from logger import Logger
 
 def main(**kwargs):
     # Update the configuration for the training and sharding process
-    update_config((train_config, fsdp_config), **kwargs)
-    
+    update_config((train_config), **kwargs)
     # Set the seeds for reproducibility
     torch.cuda.manual_seed(train_config.seed)
     torch.manual_seed(train_config.seed)
-
-    if train_config.enable_fsdp:
-        setup()
-        # torchrun specific
-        local_rank = int(os.environ["LOCAL_RANK"])
-        rank = int(os.environ["RANK"])
-        world_size = int(os.environ["WORLD_SIZE"])
-
     # Calculate gradient accumulation steps
     gradient_accumulation_steps = train_config.batch_size_training // train_config.micro_batch_size
      
@@ -51,15 +42,11 @@ def main(**kwargs):
         load_in_8bit=True if train_config.quantization else None,
         device_map="auto" if train_config.quantization else None,
     ) 
-    print_model_size(model, train_config, rank if train_config.enable_fsdp else 0)
+    print_model_size(model, train_config, 0)
     
     # Prepare the model for int8 training if quantization is enabled
     if train_config.quantization:
         model = prepare_model_for_int8_training(model)
-        
-    # Convert the model to bfloat16 if fsdp and pure_bf16 is enabled
-    if train_config.enable_fsdp and fsdp_config.pure_bf16:
-        model.to(torch.bfloat16)
     # Load the tokenizer and add special tokens
     tokenizer = LlamaTokenizer.from_pretrained(train_config.model_name)
     tokenizer.add_special_tokens({"pad_token": "<PAD>"})
@@ -67,9 +54,6 @@ def main(**kwargs):
         peft_config = generate_peft_config(train_config, kwargs)
         model = get_peft_model(model, peft_config)
         model.print_trainable_parameters()
-
-    elif not train_config.quantization and not train_config.enable_fsdp:
-        model.to("cuda")
     
     dataset_config = generate_dataset_config(train_config, kwargs)
      # Load and preprocess the dataset for training and validation
@@ -78,21 +62,13 @@ def main(**kwargs):
         dataset_config,
         split="train",
     )
-    
-    if not train_config.enable_fsdp or rank == 0:
-        print(f"--> Training Set Length = {len(dataset_train)}")
-    
     dataset_val = get_preprocessed_dataset(
         tokenizer,
         dataset_config,
         split="test",
     )
-    if not train_config.enable_fsdp or rank == 0:
-        print(f"--> Validation Set Length = {len(dataset_val)}")
-
     train_sampler = None
     val_sampler = None
-    
     # Create DataLoaders for the training and validation dataset
     train_dataloader = torch.utils.data.DataLoader(
         dataset_train,
@@ -103,7 +79,6 @@ def main(**kwargs):
         drop_last=True,
         collate_fn=default_data_collator,
     )
-
     if train_config.run_validation:
         eval_dataloader = torch.utils.data.DataLoader(
             dataset_val,

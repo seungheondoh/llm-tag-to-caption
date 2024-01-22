@@ -8,6 +8,7 @@ from datasets import load_dataset
 import jsonlines
 PROMPT = "### Instruction:\n{instruction}\n\n### Input:\n{input}\n\n### Response:\n"
 BLACK_LIST = ['comedy spoken', "comedy", "comedy rock", "pop rock", "alternative indie rock", "alternative pop rock"]
+
 MAX_TAG = 20
 class MSD_Dataset(Dataset):
     def __init__(self, data_path, split):
@@ -17,8 +18,8 @@ class MSD_Dataset(Dataset):
         self.dataset = [i for i in msd_pretrain["train"] if i["tag"]]
         print(len(self.dataset))
         self.instruction_dict = { 
-            "singular":"write a single sentence that summarize a song with the following single attribute. Do not write artist name or album name. Do not use word 'lyrics'",
-            "plural":"write a single sentence that summarize a song with the following attributes. Do not write artist name or album name.  Do not use word 'lyrics'",
+            "singular":"write a single sentence that summarize a song with the following single attribute. Do not write artist name or album name.",
+            "plural":"write a single sentence that summarize a song with the following attributes. Do not write artist name or album name.",
             }
     
     def __getitem__(self, index):

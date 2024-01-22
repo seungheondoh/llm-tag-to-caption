@@ -8,14 +8,15 @@ PROMPT = "### Instruction:\n{instruction}\n\n### Input:\n{input}\n\n### Response
 
 class FMA_Dataset(Dataset):
     def __init__(self, data_path, split):
-        # dataset = self.load_jsonlines(os.path.join(data_path, "fma_large","annotation.jsonl"))
-        dataset = torch.load("../temporal/fma_error.pt")
-        self.dataset = dataset['train'] + dataset['valid'] + dataset['test']
+        dataset = self.load_jsonlines(os.path.join(data_path, "fma_large","annotation.jsonl"))
+        self.dataset = dataset
+        # self.dataset = dataset['train'] + dataset['valid'] + dataset['test']
         self.instruction_dict = {
-            "singular":"write a single sentence that summarize a song with the following single attribute. Don't write lyrics information. Don't write artist name or album name.",
-            "plural":"write a single sentence that summarize a song with the following attributes. Don't write lyrics information. Don't write artist name or album name.",
+            "singular":"write a single sentence that summarize a song with the following single attribute. Don't write artist name or album name.",
+            "plural":"write a single sentence that summarize a song with the following attributes. Don't write artist name or album name.",
             }
         print(len(self.dataset))
+        
     def load_jsonlines(self, data_file):
         datas = []
         with jsonlines.open(data_file) as f:

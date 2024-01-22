@@ -5,6 +5,7 @@ library_name: peft
 
 
 The following `bitsandbytes` quantization config was used during training:
+- quant_method: QuantizationMethod.BITS_AND_BYTES
 - load_in_8bit: True
 - load_in_4bit: False
 - llm_int8_threshold: 6.0
@@ -16,6 +17,7 @@ The following `bitsandbytes` quantization config was used during training:
 - bnb_4bit_compute_dtype: float32
 
 The following `bitsandbytes` quantization config was used during training:
+- quant_method: QuantizationMethod.BITS_AND_BYTES
 - load_in_8bit: True
 - load_in_4bit: False
 - llm_int8_threshold: 6.0
@@ -27,6 +29,6 @@ The following `bitsandbytes` quantization config was used during training:
 - bnb_4bit_compute_dtype: float32
 ### Framework versions
 
-- PEFT 0.5.0.dev0
+- PEFT 0.6.0.dev0
 
-- PEFT 0.5.0.dev0
+- PEFT 0.6.0.dev0

@@ -2,7 +2,6 @@
 # This software may be used and distributed according to the terms of the Llama 2 Community License Agreement.
 
 # from accelerate import init_empty_weights, load_checkpoint_and_dispatch
-
 import fire
 import torch
 import os
@@ -32,7 +31,7 @@ def main(
     peft_model,
     dataset_name,
     dataset_split,
-    device: str="cuda:1",
+    device: str="auto",
     data_path: str="../../dataset",
     quantization: bool=True,
     max_new_tokens =512, #The maximum numbers of tokens to generate
@@ -73,6 +72,7 @@ def main(
         dataset = MSD_Dataset(data_path= data_path, split=dataset_split)
     # tokenizer.add_special_tokens({"pad_token": "<PAD>"})
     model.resize_token_embeddings(model.config.vocab_size + 1)
+    print("inference size == ", len(dataset))
     dataloader = torch.utils.data.DataLoader(
             dataset, batch_size=32, shuffle=False,
             num_workers=24, pin_memory=True, drop_last=False

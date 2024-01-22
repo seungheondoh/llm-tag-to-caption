@@ -15,7 +15,7 @@ from typing import List
 PROMPT = "### Instruction:\n{instruction}\n\n### Input:\n{input}\n\n### Response:"
 
 class MAPCDataset(Dataset):
-    def __init__(self, dataset_config, tokenizer, partition="train", max_words=1024):
+    def __init__(self, dataset_config, tokenizer, partition="train", max_words=385):
         self.partition = partition
         self.source = [
                         # wavcaps
@@ -29,14 +29,18 @@ class MAPCDataset(Dataset):
                         'music_caps',
                     ]
         if partition == "train":
-            self.ann = load_dataset("seungheondoh/music-audio-pseudo-captions", split="balanced_train")
+            dataset = load_dataset("seungheondoh/music-audio-pseudo-captions", split="unbalanced_sample")
+            self.ann =  [item for item in dataset if "lyrics" not in item['output']]
         else:
             self.ann = load_dataset("seungheondoh/music-audio-pseudo-captions", split="balanced_test")
         self.max_words = max_words
         self.tokenizer = tokenizer
 
     def __len__(self):
-        return len(self.ann)
+        if self.partition == "train":
+            return len(self.ann) // 10
+        else:
+            return len(self.ann)
 
     def __getitem__(self, index):
         ann = self.ann[index]
